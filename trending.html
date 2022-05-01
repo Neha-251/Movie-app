@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: rgb(151, 216, 185);
+        }
+        h1{
+            margin-left: 270px;
+        }
+        button{
+            margin-left: 270px;
+            height:30px;
+            width: 200px;
+            font-size: 18px;
+        }
+        #maindiv{
+            width:50%;
+            height:auto;
+            padding: 20px;
+            margin:auto;
+            background-color: rgb(198, 158, 236);
+        }
+        #showMovie{
+            height:auto;
+            width:90%;
+            margin:20px auto;
+            color:rgb(36, 1, 8);
+            font-size: larger;
+        }
+        #mov_div{
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            height:auto;
+            width:100%;
+            padding:10px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div id="maindiv" on>
+        <h1>Popular Movies</h1>
+
+        <div id="showMovie"></div>
+    </div>
+    
+</body>
+</html>
+
+<script>
+
+let maindiv = document.getElementById('showMovie');
+
+
+
+async function popularMovies(){
+    try{
+        let respon = await fetch(`https://api.themoviedb.org/3/movie/550?api_key=7ef497b143ed20a02bd2e18adb58614f`);
+        let get_data = await respon.json();
+        let movies_trending = get_data.production_companies;
+        console.log("movies_trending", movies_trending);
+        trendingMovie(movies_trending);
+
+    } catch(error){
+        console.log(error);
+    }
+}
+
+function trendingMovie(movies){
+    
+    movies.forEach(function (elem){
+
+        let mov_div = document.createElement('div');
+        mov_div.setAttribute("id", "mov_div");
+
+        let p1 = document.createElement('p');
+        p1.innerText = elem.name;
+        p1.style.fontSize = "25px";
+
+        let p2 = document.createElement('p');
+        p2.innerText = `Origin - ${elem.origin_country}`;
+        p2.style.fontSize = "15px";
+
+        let img = document.createElement('img');
+        img.src = "https://image.tmdb.org/t/p/w500/elem.logo_path";
+
+        console.log(p1);
+
+        mov_div.append(p1, p2);
+        maindiv.append(mov_div);
+    });
+
+}
+
+popularMovies();
+</script>
